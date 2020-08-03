@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Helpdesk</string>
+    <string name="loginText">Login</string>
+    <string name="usernameText">Username</string>
+    <string name="welcomeText">Welcome to Web Help Desk!</string>
+    <string name="passwordText">Password</string>
+</resources>
