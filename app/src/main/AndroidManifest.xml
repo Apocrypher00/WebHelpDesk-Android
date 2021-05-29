@@ -12,18 +12,18 @@
         android:roundIcon="@android:drawable/ic_menu_help"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TicketActivity"></activity>
-        <activity android:name=".TicketSearchActivity" />
-        <activity android:name=".TicketMenuActivity" />
-        <activity android:name=".MainMenuActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name="ca.apocrypher.webhelpdesk.TicketActivity" />
+        <activity android:name="ca.apocrypher.webhelpdesk.TicketSearchActivity" />
+        <activity android:name="ca.apocrypher.webhelpdesk.TicketMenuActivity" />
+        <activity android:name="ca.apocrypher.webhelpdesk.MainMenuActivity" />
+        <activity android:name="ca.apocrypher.webhelpdesk.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TicketListActivity" />
+        <activity android:name="ca.apocrypher.webhelpdesk.TicketListActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"

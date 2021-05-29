@@ -26,7 +26,7 @@ class ExpandableListAdapter(private val context: Context?, private val titles: M
 	}
 	override fun getChildrenCount(listPosition: Int): Int { return details[titles.elementAt(listPosition)]?.size!! }
 
-	override fun getGroup(listPosition: Int): Any? { return titles.elementAt(listPosition) }
+	override fun getGroup(listPosition: Int): Any { return titles.elementAt(listPosition) }
 	override fun getGroupId(listPosition: Int): Long { return listPosition.toLong() }
 	override fun getGroupView(listPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View? {
 		var cv = convertView
