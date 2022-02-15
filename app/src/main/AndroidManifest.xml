@@ -11,20 +11,20 @@
         android:label="@string/app_name"
         android:roundIcon="@android:drawable/ic_menu_help"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:dataExtractionRules="@xml/data_extraction_rules">
         <activity android:name="ca.apocrypher.webhelpdesk.TicketActivity" />
         <activity android:name="ca.apocrypher.webhelpdesk.TicketSearchActivity" />
         <activity android:name="ca.apocrypher.webhelpdesk.TicketMenuActivity" />
         <activity android:name="ca.apocrypher.webhelpdesk.MainMenuActivity" />
-        <activity android:name="ca.apocrypher.webhelpdesk.LoginActivity">
+        <activity android:name="ca.apocrypher.webhelpdesk.LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name="ca.apocrypher.webhelpdesk.TicketListActivity" />
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

@@ -19,7 +19,7 @@ import java.net.CookiePolicy
 typealias Parameter = Pair<String, Any>
 
 object Api {
-    private const val apiUrl: String = "https://helpdesk.example.com/helpdesk/WebObjects/Helpdesk.woa/ra/"
+    private const val apiUrl: String = "https://helpdesk.example.com/helpdesk/WebObjects/Helpdesk.woa/ra"
     private lateinit var sessionKey: String
     private lateinit var queue: RequestQueue
     private lateinit var cookieManager: CookieManager
@@ -65,7 +65,7 @@ object Api {
     }
 
     private fun makeSessionRequest(resource: String, result: (JSONObject) -> Unit, error: (VolleyError) -> Unit, username: String, password: String) {
-        queue.add(JsonObjectRequest(GET, addParams("$apiUrl$resource", username, password), result, error))
+        queue.add(JsonObjectRequest(GET, addParams("$apiUrl/$resource", username, password), null, result, error))
     }
 
     fun getResource(resource: String, result: (JSONObject) -> Unit, error: (VolleyError) -> Unit, vararg params: Parameter) {
@@ -85,18 +85,18 @@ object Api {
     }
 
     private fun makeObjectRequest(resource: String, result: (JSONObject) -> Unit, error: (VolleyError) -> Unit, vararg params: Parameter) {
-        queue.add(JsonObjectRequest(GET, addParams("$apiUrl$resource", *params), result, error))
+        queue.add(JsonObjectRequest(GET, addParams("$apiUrl/$resource", *params), null, result, error))
     }
 
     private fun makeObjectRequest(resource: String, result: (JSONObject) -> Unit, error: (VolleyError) -> Unit, params: Bundle) {
-        queue.add(JsonObjectRequest(GET, addParams("$apiUrl$resource", params), result, error))
+        queue.add(JsonObjectRequest(GET, addParams("$apiUrl/$resource", params), null, result, error))
     }
 
     private fun makeArrayRequest(resource: String, result: (JSONArray) -> Unit, error: (VolleyError) -> Unit, vararg params: Parameter) {
-        queue.add(JsonArrayRequest(GET, addParams("$apiUrl$resource", *params), result, error))
+        queue.add(JsonArrayRequest(GET, addParams("$apiUrl/$resource", *params), null, result, error))
     }
 
     private fun makeArrayRequest(resource: String, result: (JSONArray) -> Unit, error: (VolleyError) -> Unit, params: Bundle) {
-        queue.add(JsonArrayRequest(GET, addParams("$apiUrl$resource", params), result, error))
+        queue.add(JsonArrayRequest(GET, addParams("$apiUrl/$resource", params), null, result, error))
     }
 }
