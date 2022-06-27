@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
-import java.util.*
 
 class ExpandableListAdapter(private val context: Context?, private val titles: MutableSet<String>, private val details: HashMap<String, Array<String>>) : BaseExpandableListAdapter() {
 	override fun getChild(listPosition: Int, expandedListPosition: Int): Any? { return details[titles.elementAt(listPosition)]?.get(expandedListPosition) }
