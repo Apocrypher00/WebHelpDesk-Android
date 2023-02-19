@@ -7,11 +7,14 @@ import android.view.View
 import android.widget.ExpandableListView
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_ticket_list.*
+import ca.apocrypher.webhelpdesk.databinding.ActivityTicketListBinding
+//import kotlinx.android.synthetic.main.activity_ticket_list.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
+// Todo: Fix memory leak
+private lateinit var binding: ActivityTicketListBinding
 
 class TicketListActivity : AppCompatActivity() {
 	private lateinit var tickets: JSONArray
@@ -20,7 +23,10 @@ class TicketListActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		//Generated boilerplate
 		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_ticket_list)
+		binding = ActivityTicketListBinding.inflate(layoutInflater)
+		val view = binding.root
+		//setContentView(R.layout.activity_ticket_list)
+		setContentView(view)
 
 		//Populate page
 		getTickets(intent.extras!!)
@@ -68,8 +74,8 @@ class TicketListActivity : AppCompatActivity() {
 
 	private fun showTickets() {
 		val expandableListAdapter = ExpandableListAdapter(this, groups.keys, groups)
-		expandableListView.setAdapter(expandableListAdapter)
-		registerForContextMenu(expandableListView)
+		binding.expandableListView.setAdapter(expandableListAdapter)
+		registerForContextMenu(binding.expandableListView)
 	}
 
 	override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {

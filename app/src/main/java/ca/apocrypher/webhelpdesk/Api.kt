@@ -15,7 +15,6 @@ import java.net.CookieHandler
 import java.net.CookieManager
 import java.net.CookiePolicy
 
-
 typealias Parameter = Pair<String, Any>
 
 object Api {

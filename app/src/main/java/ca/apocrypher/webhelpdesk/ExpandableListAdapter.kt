@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 
+// Todo: Comment everything
 class ExpandableListAdapter(private val context: Context?, private val titles: MutableSet<String>, private val details: HashMap<String, Array<String>>) : BaseExpandableListAdapter() {
 	override fun getChild(listPosition: Int, expandedListPosition: Int): Any? { return details[titles.elementAt(listPosition)]?.get(expandedListPosition) }
 	override fun getChildId(listPosition: Int, expandedListPosition: Int): Long { return expandedListPosition.toLong() }

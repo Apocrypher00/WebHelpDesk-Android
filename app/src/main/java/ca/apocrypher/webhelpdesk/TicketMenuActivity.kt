@@ -3,17 +3,21 @@ package ca.apocrypher.webhelpdesk
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_ticket_menu.*
+import ca.apocrypher.webhelpdesk.databinding.ActivityTicketMenuBinding
+//import kotlinx.android.synthetic.main.activity_ticket_menu.*
 
 class TicketMenuActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //Generated boilerplate
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ticket_menu)
+        val binding = ActivityTicketMenuBinding.inflate(layoutInflater)
+        val view = binding.root
+        //setContentView(R.layout.activity_ticket_menu)
+        setContentView(view)
 
         // Attach a listener to mineButton
-        mineButton.setOnClickListener {
+        binding.mineButton.setOnClickListener {
             //Build intent
             val params = Bundle(2)
             params["list"] = "mine"
@@ -31,6 +35,6 @@ class TicketMenuActivity : AppCompatActivity() {
         }
 
         // Go to TicketSearchActivity when searchButton is clicked
-        searchButton.setOnClickListener { startActivity(TicketSearchActivity::class.java) }
+        binding.searchButton.setOnClickListener { startActivity(TicketSearchActivity::class.java) }
     }
 }

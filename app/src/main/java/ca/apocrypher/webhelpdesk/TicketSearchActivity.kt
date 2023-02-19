@@ -4,14 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_ticket_search.*
+import ca.apocrypher.webhelpdesk.databinding.ActivityTicketSearchBinding
+//import kotlinx.android.synthetic.main.activity_ticket_search.*
 
 class TicketSearchActivity : AppCompatActivity() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		//Generated boilerplate
 		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_ticket_search)
+		val binding = ActivityTicketSearchBinding.inflate(layoutInflater)
+		val view = binding.root
+		//setContentView(R.layout.activity_ticket_search)
+		setContentView(view)
 
 		Api.getResources("StatusTypes",
 				{
@@ -20,7 +24,7 @@ class TicketSearchActivity : AppCompatActivity() {
 					}
 					val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items)
 					adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-					statusSpinner.adapter = adapter
+					binding.statusSpinner.adapter = adapter
 				},
 				{
 					Api.reset(this)
@@ -35,7 +39,7 @@ class TicketSearchActivity : AppCompatActivity() {
 					}
 					val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items)
 					adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-					locationSpinner.adapter = adapter
+					binding.locationSpinner.adapter = adapter
 				},
 				{
 					Api.reset(this)
@@ -43,12 +47,12 @@ class TicketSearchActivity : AppCompatActivity() {
 				}
 		)
 
-		searchButton.setOnClickListener {
+		binding.searchButton.setOnClickListener {
 			// Build qualifier
-			val statusString = "(statustype.statusTypeName %3D \"${statusSpinner.selectedItem}\")"
-			val locationString = "(location.locationName %3D \"${locationSpinner.selectedItem}\")"
-			val s = statusSpinner.selectedItemPosition
-			val l = locationSpinner.selectedItemPosition
+			val statusString = "(statustype.statusTypeName %3D \"${binding.statusSpinner.selectedItem}\")"
+			val locationString = "(location.locationName %3D \"${binding.locationSpinner.selectedItem}\")"
+			val s = binding.statusSpinner.selectedItemPosition
+			val l = binding.locationSpinner.selectedItemPosition
 			val qualifier = if (s != 0 && l != 0) { "($statusString and $locationString)" }
 				else if (s != 0 && l == 0) { statusString }
 				else if (s == 0 && l != 0) { locationString }

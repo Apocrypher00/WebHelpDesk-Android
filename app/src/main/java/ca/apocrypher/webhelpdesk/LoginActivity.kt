@@ -4,13 +4,17 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
-import kotlinx.android.synthetic.main.activity_login.*
+import ca.apocrypher.webhelpdesk.databinding.ActivityLoginBinding
+//import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // Generated boilerplate
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        val binding = ActivityLoginBinding.inflate(layoutInflater)
+        val view = binding.root
+        //setContentView(R.layout.activity_login)
+        setContentView(view)
 
         // Initialize Api Wrapper
         Api.initialize(applicationContext)
@@ -27,10 +31,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // Attach listener to loginButton
-        loginButton.setOnClickListener {
+        binding.loginButton.setOnClickListener {
             // Retrieve contents of text boxes
-            val username: String = usernameEditText.text.toString()
-            val password: String = passwordEditText.text.toString()
+            val username: String = binding.usernameEditText.text.toString()
+            val password: String = binding.passwordEditText.text.toString()
 
             // Check if the content of editText is a valid apiKey
             checkInput(sharedPref, username, password)
