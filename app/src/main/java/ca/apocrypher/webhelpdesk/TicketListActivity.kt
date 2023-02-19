@@ -13,10 +13,8 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-// Todo: Fix memory leak
-private lateinit var binding: ActivityTicketListBinding
-
 class TicketListActivity : AppCompatActivity() {
+	private lateinit var binding: ActivityTicketListBinding
 	private lateinit var tickets: JSONArray
 	private val groups: LinkedHashMap<String, Array<String>> = LinkedHashMap()
 
@@ -33,7 +31,8 @@ class TicketListActivity : AppCompatActivity() {
 	}
 
 	private fun getTickets(extras: Bundle) {
-		Api.getResources(extras["RESOURCE"] as String,
+		Api.getResources(
+			extras["RESOURCE"] as String,
 			{
 				tickets = it
 				formatTickets()
@@ -43,7 +42,8 @@ class TicketListActivity : AppCompatActivity() {
 				Api.reset(this)
 				startActivity(LoginActivity::class.java)
 			},
-			extras["PARAMS"] as Bundle)
+			extras["PARAMS"] as Bundle
+		)
 	}
 
 	private fun formatTickets() {
