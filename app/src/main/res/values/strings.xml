@@ -5,4 +5,7 @@
     <string name="welcomeText">Welcome to Web Help Desk!</string>
     <string name="passwordText">Password</string>
     <string name="logo_description">App icon</string>
+    <string name="apiText">example.domain.com</string>
+    <string name="searchButtonText">Search</string>
+    <string name="apiLockButtonText">Edit Hostname</string>
 </resources>

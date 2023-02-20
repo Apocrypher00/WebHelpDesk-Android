@@ -8,11 +8,12 @@ import ca.apocrypher.webhelpdesk.databinding.ActivityTicketSearchBinding
 //import kotlinx.android.synthetic.main.activity_ticket_search.*
 
 class TicketSearchActivity : AppCompatActivity() {
+	private lateinit var binding: ActivityTicketSearchBinding
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		//Generated boilerplate
 		super.onCreate(savedInstanceState)
-		val binding = ActivityTicketSearchBinding.inflate(layoutInflater)
+		binding = ActivityTicketSearchBinding.inflate(layoutInflater)
 		val view = binding.root
 		//setContentView(R.layout.activity_ticket_search)
 		setContentView(view)

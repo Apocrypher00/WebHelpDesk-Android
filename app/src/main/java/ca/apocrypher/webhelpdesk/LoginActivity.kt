@@ -8,10 +8,12 @@ import ca.apocrypher.webhelpdesk.databinding.ActivityLoginBinding
 //import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // Generated boilerplate
         super.onCreate(savedInstanceState)
-        val binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
         //setContentView(R.layout.activity_login)
         setContentView(view)
@@ -19,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
         // Initialize Api Wrapper
         Api.initialize(applicationContext)
 
-        // Skip Login and go to Tickets if a session key has already been entered, verified, and stored
+        // Skip Login and go to Main Menu if a session key has already been entered, verified, and stored
         val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val sessionKey: String = sharedPref.getString("sessionKey", "")!!
         if (sessionKey != "") {
@@ -36,12 +38,12 @@ class LoginActivity : AppCompatActivity() {
             val username: String = binding.usernameEditText.text.toString()
             val password: String = binding.passwordEditText.text.toString()
 
-            // Check if the content of editText is a valid apiKey
-            checkInput(sharedPref, username, password)
+            // Check if the if the provided credentials are valid
+            checkCredentials(sharedPref, username, password)
         }
     }
 
-    private fun checkInput(sharedPref: SharedPreferences, username: String, password: String) {
+    private fun checkCredentials(sharedPref: SharedPreferences, username: String, password: String) {
         if (username == "" || password == "") return
 
         Api.getSession("Session",

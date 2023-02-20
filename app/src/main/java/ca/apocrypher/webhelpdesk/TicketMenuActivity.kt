@@ -7,11 +7,12 @@ import ca.apocrypher.webhelpdesk.databinding.ActivityTicketMenuBinding
 //import kotlinx.android.synthetic.main.activity_ticket_menu.*
 
 class TicketMenuActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityTicketMenuBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //Generated boilerplate
         super.onCreate(savedInstanceState)
-        val binding = ActivityTicketMenuBinding.inflate(layoutInflater)
+        binding = ActivityTicketMenuBinding.inflate(layoutInflater)
         val view = binding.root
         //setContentView(R.layout.activity_ticket_menu)
         setContentView(view)

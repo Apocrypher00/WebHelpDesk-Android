@@ -6,13 +6,14 @@ import ca.apocrypher.webhelpdesk.databinding.ActivityMainMenuBinding
 //import kotlinx.android.synthetic.main.activity_main_menu.*
 
 class MainMenuActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainMenuBinding
 
     override fun onBackPressed() {} //Do nothing so you don't accidentally go to Login
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Generated boilerplate
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainMenuBinding.inflate(layoutInflater)
+        binding = ActivityMainMenuBinding.inflate(layoutInflater)
         val view = binding.root
         //setContentView(R.layout.activity_main_menu)
         setContentView(view)
