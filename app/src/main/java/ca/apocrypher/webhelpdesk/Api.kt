@@ -1,7 +1,9 @@
 package ca.apocrypher.webhelpdesk
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.webkit.URLUtil
 import androidx.preference.PreferenceManager
 import com.android.volley.Request.Method.GET
 import com.android.volley.RequestQueue
@@ -17,26 +19,53 @@ import java.net.CookiePolicy
 
 typealias Parameter = Pair<String, Any>
 
+// This is a singleton class
+// Only one Api object for the whole app
 object Api {
-    private const val apiUrl: String = "https://helpdesk.example.com/helpdesk/WebObjects/Helpdesk.woa/ra"
-    private lateinit var sessionKey: String
+    lateinit var apiUrl: String; private set
+    lateinit var hostname: String; private set
+    lateinit var sessionKey: String; private set
     private lateinit var queue: RequestQueue
     private lateinit var cookieManager: CookieManager
+    private lateinit var sharedPref: SharedPreferences
 
     fun initialize(context: Context) {
+        // Create queue for sending api requests
         queue = Volley.newRequestQueue(context)
 
+        // Create custom cookie manager for persistent cookies
         cookieManager = CookieManager(PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL)
         CookieHandler.setDefault(cookieManager)
+
+        // Get stored values to build api url
+        // Never null because we supply a default
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
+        sessionKey = sharedPref.getString("sessionKey", "")!!
+        hostname   = sharedPref.getString("hostname",   "")!!
+
+        // Build apiUrl if values are available
+        apiUrl = if (hostname != "") { "https://${hostname}/helpdesk/WebObjects/Helpdesk.woa/ra" } else { "" }
     }
 
-    fun reset(context: Context) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().remove("sessionKey").apply()
+    fun reset() {
+        sharedPref.edit().remove("sessionKey").apply()
+        // TODO: Create separate functions for hard/soft reset
+        //sharedPref.edit().remove("hostname").apply()
         cookieManager.cookieStore.removeAll()
+    }
+
+    fun testUrl(url: String) {
+        URLUtil.isValidUrl(url)
     }
 
     fun setSessionKey(key: String) {
         sessionKey = key
+        sharedPref.edit().putString("sessionKey", sessionKey).apply()
+    }
+
+    fun setHostname(host: String) {
+        hostname = host
+        sharedPref.edit().putString("hostname", hostname).apply()
     }
 
     private fun addParams(url: String, vararg params: Parameter): String {
@@ -55,12 +84,18 @@ object Api {
         return "${url}?username=${username}&password=${password}"
     }
 
-    fun getSession(resource: String, result: (JSONObject) -> Unit, error: (VolleyError) -> Unit, username: String, password: String) {
+    fun getSession(
+        resource: String,
+        result: (JSONObject) -> Unit,
+        error: (VolleyError) -> Unit,
+        username: String,
+        password: String
+    ) {
         makeSessionRequest(resource, result, error, username, password)
     }
 
     fun testSession(result: (JSONObject) -> Unit, error: (VolleyError) -> Unit) {
-        getResource("Session", result, error)
+        getResource("Techs/currentTech", result, error)
     }
 
     private fun makeSessionRequest(resource: String, result: (JSONObject) -> Unit, error: (VolleyError) -> Unit, username: String, password: String) {

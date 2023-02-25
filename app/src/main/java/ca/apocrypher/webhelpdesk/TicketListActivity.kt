@@ -8,7 +8,6 @@ import android.widget.ExpandableListView
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo
 import androidx.appcompat.app.AppCompatActivity
 import ca.apocrypher.webhelpdesk.databinding.ActivityTicketListBinding
-//import kotlinx.android.synthetic.main.activity_ticket_list.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -19,14 +18,12 @@ class TicketListActivity : AppCompatActivity() {
 	private val groups: LinkedHashMap<String, Array<String>> = LinkedHashMap()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
-		//Generated boilerplate
+		// Activity boilerplate
 		super.onCreate(savedInstanceState)
 		binding = ActivityTicketListBinding.inflate(layoutInflater)
-		val view = binding.root
-		//setContentView(R.layout.activity_ticket_list)
-		setContentView(view)
+		setContentView(binding.root)
 
-		//Populate page
+		// Populate page
 		getTickets(intent.extras!!)
 	}
 
@@ -39,7 +36,7 @@ class TicketListActivity : AppCompatActivity() {
 				showTickets()
 			},
 			{
-				Api.reset(this)
+				Api.reset()
 				startActivity(LoginActivity::class.java)
 			},
 			extras["PARAMS"] as Bundle
@@ -92,7 +89,8 @@ class TicketListActivity : AppCompatActivity() {
 		val groupPos: Int = ExpandableListView.getPackedPositionGroup(info.packedPosition)
 
 		// Pull values from the array we built when we created the list
-		ErrorBox(this, "Nice", (tickets[groupPos] as JSONObject).getInt("id").toString())
+		//ErrorBox(this, "Nice", (tickets[groupPos] as JSONObject).getInt("id").toString())
+		ErrorBox(this, "W.I.P.", "Feature coming soon...")
 
 		return true
 	}

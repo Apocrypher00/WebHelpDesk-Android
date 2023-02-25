@@ -7,7 +7,7 @@ import java.net.HttpCookie
 import java.net.URI
 
 class PersistentCookieStore(val context: Context) : CookieStore {
-    private var store: CookieStore = CookieManager().cookieStore
+    private val store: CookieStore = CookieManager().cookieStore
     private val cookieSharedPreferences = context.getSharedPreferences("cookieStore", Context.MODE_PRIVATE)
 
     init {

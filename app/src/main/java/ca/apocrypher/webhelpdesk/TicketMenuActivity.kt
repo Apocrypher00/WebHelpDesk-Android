@@ -4,18 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ca.apocrypher.webhelpdesk.databinding.ActivityTicketMenuBinding
-//import kotlinx.android.synthetic.main.activity_ticket_menu.*
 
 class TicketMenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTicketMenuBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //Generated boilerplate
+        // Activity boilerplate
         super.onCreate(savedInstanceState)
         binding = ActivityTicketMenuBinding.inflate(layoutInflater)
-        val view = binding.root
-        //setContentView(R.layout.activity_ticket_menu)
-        setContentView(view)
+        setContentView(binding.root)
 
         // Attach a listener to mineButton
         binding.mineButton.setOnClickListener {

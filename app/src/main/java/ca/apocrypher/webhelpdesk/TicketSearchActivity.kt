@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import ca.apocrypher.webhelpdesk.databinding.ActivityTicketSearchBinding
-//import kotlinx.android.synthetic.main.activity_ticket_search.*
 
 class TicketSearchActivity : AppCompatActivity() {
 	private lateinit var binding: ActivityTicketSearchBinding
 
 	override fun onCreate(savedInstanceState: Bundle?) {
-		//Generated boilerplate
+		// Activity boilerplate
 		super.onCreate(savedInstanceState)
 		binding = ActivityTicketSearchBinding.inflate(layoutInflater)
-		val view = binding.root
-		//setContentView(R.layout.activity_ticket_search)
-		setContentView(view)
+		setContentView(binding.root)
 
 		Api.getResources("StatusTypes",
 				{
@@ -28,7 +25,7 @@ class TicketSearchActivity : AppCompatActivity() {
 					binding.statusSpinner.adapter = adapter
 				},
 				{
-					Api.reset(this)
+					Api.reset()
 					startActivity(LoginActivity::class.java)
 				}
 		)
@@ -43,7 +40,7 @@ class TicketSearchActivity : AppCompatActivity() {
 					binding.locationSpinner.adapter = adapter
 				},
 				{
-					Api.reset(this)
+					Api.reset()
 					startActivity(LoginActivity::class.java)
 				}
 		)
