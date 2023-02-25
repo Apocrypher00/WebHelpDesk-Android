@@ -7,7 +7,8 @@ import ca.apocrypher.webhelpdesk.databinding.ActivityMainMenuBinding
 class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainMenuBinding
 
-    override fun onBackPressed() {} //Do nothing so you don't accidentally go to Login
+    // TODO: Fix deprecated function
+    override fun onBackPressed() {} // Do nothing so you don't accidentally go to Login
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Activity boilerplate
@@ -17,5 +18,11 @@ class MainMenuActivity : AppCompatActivity() {
 
         // Go to TicketMenuActivity when ticketsButton is clicked
         binding.ticketsButton.setOnClickListener { startActivity(TicketMenuActivity::class.java) }
+
+        // Attach listener to assetsButton
+        binding.assetsButton.setOnClickListener { ErrorBox.notImplemented(this) }
+
+        // Attach listener to settingsButton
+        binding.settingsButton.setOnClickListener { ErrorBox.notImplemented(this) }
     }
 }

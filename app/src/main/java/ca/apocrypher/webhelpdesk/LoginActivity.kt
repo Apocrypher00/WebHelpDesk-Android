@@ -16,6 +16,15 @@ class LoginActivity : AppCompatActivity() {
         // Initialize Api Wrapper
         Api.initialize(applicationContext)
 
+        // Skip Login and go to MainMenu if sessionKey has already been generated
+        // TODO: Can we make the login not appear in this case?
+        if (Api.sessionKey != "") {
+            Api.testSession(
+                { startActivity(MainMenuActivity::class.java) }, // Pass
+                { Api.reset() }                                  // Fail
+            )
+        }
+
         // Allow hostname to be provided, or disallow if already provided and display it
         if (Api.hostname == "") {
             binding.hostnameEditText.isEnabled = true
@@ -24,14 +33,6 @@ class LoginActivity : AppCompatActivity() {
             binding.hostnameEditText.isEnabled = false
             binding.hostnameEditText.setText(Api.hostname)
             binding.hostnameButton.isEnabled = true
-        }
-
-        // Skip Login and go to MainMenu if sessionKey has already been generated
-        if (Api.sessionKey != "") {
-            Api.testSession(
-                { startActivity(MainMenuActivity::class.java) }, // Pass
-                { Api.reset() }                                  // Fail
-            )
         }
 
         // Attach listener to hostnameButton
@@ -69,24 +70,17 @@ class LoginActivity : AppCompatActivity() {
             }
 
             // Check if the provided credentials are valid
-            checkCredentials(username, password)
+            Api.getSession("Session",
+                { session ->
+                    Api.setSessionKey(session.getString("sessionKey"))
+                    startActivity(MainMenuActivity::class.java)
+                },
+                {
+                    // Username or password false, display an error
+                    ErrorBox(this, "Failed to Authenticate", "Incorrect Username or Password")
+                },
+                username, password
+            )
         }
-    }
-
-    // TODO: This might make more sense wholly inside the button logic
-    private fun checkCredentials(username: String, password: String) {
-        Api.getSession("Session",
-            { session ->
-                val sessionKey = session.getString("sessionKey")
-                Api.setSessionKey(sessionKey)
-                startActivity(MainMenuActivity::class.java)
-            },
-            {
-                // Username or password false, display an error
-                ErrorBox(this, "Failed to Authenticate", "Incorrect Username or Password")
-            },
-            username,
-            password
-        )
     }
 }

@@ -34,5 +34,8 @@ class TicketMenuActivity : AppCompatActivity() {
 
         // Go to TicketSearchActivity when searchButton is clicked
         binding.searchButton.setOnClickListener { startActivity(TicketSearchActivity::class.java) }
+
+        // Attach listener to addButton
+        binding.addButton.setOnClickListener { ErrorBox.notImplemented(this) }
     }
 }

@@ -12,4 +12,10 @@ class ErrorBox(context: Context, title: String , msg: String) {
 		dlgAlert.setCancelable(true)
 		dlgAlert.create().show()
 	}
+
+	companion object {
+		fun notImplemented(context: Context) {
+			ErrorBox(context, "Work In Progress", "Feature not yet available.")
+		}
+	}
 }

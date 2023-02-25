@@ -85,12 +85,13 @@ class TicketListActivity : AppCompatActivity() {
 	}
 
 	override fun onContextItemSelected(menuItem: MenuItem): Boolean {
-		val info = menuItem.menuInfo as ExpandableListContextMenuInfo
-		val groupPos: Int = ExpandableListView.getPackedPositionGroup(info.packedPosition)
+		ErrorBox.notImplemented(this)
+
+		//val info = menuItem.menuInfo as ExpandableListContextMenuInfo
+		//val groupPos: Int = ExpandableListView.getPackedPositionGroup(info.packedPosition)
 
 		// Pull values from the array we built when we created the list
 		//ErrorBox(this, "Nice", (tickets[groupPos] as JSONObject).getInt("id").toString())
-		ErrorBox(this, "W.I.P.", "Feature coming soon...")
 
 		return true
 	}
