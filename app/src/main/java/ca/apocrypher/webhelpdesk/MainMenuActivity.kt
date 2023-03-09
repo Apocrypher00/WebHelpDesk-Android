@@ -8,6 +8,7 @@ class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainMenuBinding
 
     // TODO: Fix deprecated function
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {} // Do nothing so you don't accidentally go to Login
 
     override fun onCreate(savedInstanceState: Bundle?) {
