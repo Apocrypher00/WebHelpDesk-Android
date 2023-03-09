@@ -3,6 +3,7 @@ package ca.apocrypher.webhelpdesk
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ca.apocrypher.webhelpdesk.databinding.ActivityLoginBinding
+import com.android.volley.*
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -73,13 +74,57 @@ class LoginActivity : AppCompatActivity() {
             Api.getSession("Session",
                 { session ->
                     Api.setSessionKey(session.getString("sessionKey"))
+                    // If we reached this point, save the hostname
+                    if (hostname != "") { Api.setHostname(hostname) }
                     startActivity(MainMenuActivity::class.java)
                 },
-                {
-                    // Username or password false, display an error
-                    ErrorBox(this, "Failed to Authenticate", "Incorrect Username or Password")
+                { error ->
+                    when (error) {
+                        is TimeoutError -> {
+                            ErrorBox(
+                                this,
+                                "TimeoutError",
+                                "Dev Error: Please report this!"
+                            )
+                        }
+                        is NoConnectionError -> {
+                            ErrorBox(
+                                this,
+                                "Failed to Connect",
+                                "Is the domain correct?"
+                            )
+                        }
+                        is AuthFailureError -> {
+                            ErrorBox(
+                                this,
+                                "Failed to Authenticate",
+                                "Incorrect Username or Password"
+                            )
+                        }
+                        is ServerError -> {
+                            ErrorBox(
+                                this,
+                                "ServerError",
+                                "Dev Error: Please report this!"
+                            )
+                        }
+                        is NetworkError -> {
+                            ErrorBox(
+                                this,
+                                "NetworkError",
+                                "Dev Error: Please report this!"
+                            )
+                        }
+                        is ParseError -> {
+                            ErrorBox(
+                                this,
+                                "ParseError",
+                                "Dev Error: Please report this!"
+                            )
+                        }
+                    }
                 },
-                username, password
+                username, password, hostname
             )
         }
     }

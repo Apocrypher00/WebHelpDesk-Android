@@ -44,7 +44,16 @@ object Api {
         hostname   = sharedPref.getString("hostname",   "")!!
 
         // Build apiUrl if values are available
-        apiUrl = if (hostname != "") { "https://${hostname}/helpdesk/WebObjects/Helpdesk.woa/ra" } else { "" }
+        buildApiUrl(hostname)
+    }
+
+    // Build apiUrl from hostname, provided or stored
+    // May be necessary if some implementations use a different format
+    fun buildApiUrl(hostname: String) {
+        // Use stored hostname if blank
+        val host = if (hostname != "") { hostname } else { Api.hostname }
+        // If hostname hasn't been stored, url is blank
+        apiUrl = if (host != "") { "https://${ host }/helpdesk/WebObjects/Helpdesk.woa/ra" } else { "" }
     }
 
     fun reset() {
@@ -63,6 +72,7 @@ object Api {
         sharedPref.edit().putString("sessionKey", sessionKey).apply()
     }
 
+    // TODO: Should this function also build apiUrl?
     fun setHostname(host: String) {
         hostname = host
         sharedPref.edit().putString("hostname", hostname).apply()
@@ -89,8 +99,10 @@ object Api {
         result: (JSONObject) -> Unit,
         error: (VolleyError) -> Unit,
         username: String,
-        password: String
+        password: String,
+        hostname: String
     ) {
+        buildApiUrl(hostname)
         makeSessionRequest(resource, result, error, username, password)
     }
 
