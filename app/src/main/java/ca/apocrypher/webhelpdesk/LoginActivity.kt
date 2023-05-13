@@ -91,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
                             ErrorBox(
                                 this,
                                 "Failed to Connect",
-                                "Is the domain correct?"
+                                "Is the domain correct? ${error.localizedMessage}"
                             )
                         }
                         is AuthFailureError -> {
