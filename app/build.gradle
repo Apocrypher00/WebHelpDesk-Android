@@ -1,19 +1,19 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-parcelize")
+    alias libs.plugins.android.application
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.kotlin.parcelize
 }
 
 android {
-    compileSdk 33
+    compileSdk 37
     defaultConfig {
         applicationId "ca.apocrypher.webhelpdesk"
-        minSdkVersion 24
-        targetSdkVersion 33
+        minSdk 24
+        targetSdk 37
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        resConfigs 'en'
+        resourceConfigurations += ['en']
     }
     buildTypes {
         release {
@@ -25,46 +25,43 @@ android {
         viewBinding = true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     namespace 'ca.apocrypher.webhelpdesk'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation libs.appcompat
+    implementation libs.constraintlayout
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
+    implementation libs.core.ktx
 
     // Parallelization Components
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
+    implementation libs.kotlinx.coroutines.android
+    implementation libs.kotlinx.coroutines.core
 
     // Preferences
-    implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation libs.preference.ktx
 
     // API Support
-    implementation 'com.android.volley:volley:1.2.1'
+    implementation libs.volley
 
     // Kotlin Nav Component
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation libs.navigation.fragment.ktx
+    implementation libs.navigation.ui.ktx
 
     // Dynamic Feature Module Support
-    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.5.3'
+    implementation libs.navigation.dynamic.features.fragment
 
     // Testing Navigation
-    androidTestImplementation 'androidx.navigation:navigation-testing:2.5.3'
-    implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'com.loopj.android:android-async-http:1.4.11'
-}
-repositories {
-    mavenCentral()
+    androidTestImplementation libs.navigation.testing
+    implementation libs.gson
+    implementation libs.android.async.http
 }

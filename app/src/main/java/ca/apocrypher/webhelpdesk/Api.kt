@@ -17,6 +17,7 @@ import org.json.JSONObject
 import java.net.CookieHandler
 import java.net.CookieManager
 import java.net.CookiePolicy
+import androidx.core.content.edit
 
 typealias Parameter = Pair<String, Any>
 
@@ -59,7 +60,7 @@ object Api {
 
     fun reset() {
         accessToken = ""
-        sharedPref.edit().remove("accessToken").apply()
+        sharedPref.edit { remove("accessToken") }
         // TODO: Create separate functions for hard/soft reset
         //sharedPref.edit().remove("hostname").apply()
         cookieManager.cookieStore.removeAll()
@@ -71,13 +72,13 @@ object Api {
 
     fun setAccessToken(key: String) {
         accessToken = key
-        sharedPref.edit().putString("accessToken", accessToken).apply()
+        sharedPref.edit { putString("accessToken", accessToken) }
     }
 
     // TODO: Should this function also build apiUrl?
     fun setHostname(host: String) {
         hostname = host
-        sharedPref.edit().putString("hostname", hostname).apply()
+        sharedPref.edit { putString("hostname", hostname) }
     }
 
     private fun addParams(url: String, vararg params: Parameter): String {
