@@ -17,10 +17,10 @@ class LoginActivity : AppCompatActivity() {
         // Initialize Api Wrapper
         Api.initialize(applicationContext)
 
-        // Skip Login and go to MainMenu if sessionKey has already been generated
+        // Skip Login and go to MainMenu if accessToken has already been generated
         // TODO: Can we make the login not appear in this case?
-        if (Api.sessionKey != "") {
-            Api.testSession(
+        if (Api.accessToken != "") {
+            Api.testToken(
                 { startActivity(MainMenuActivity::class.java) }, // Pass
                 { Api.reset() }                                  // Fail
             )
@@ -71,9 +71,9 @@ class LoginActivity : AppCompatActivity() {
             }
 
             // Check if the provided credentials are valid
-            Api.getSession("Session",
-                { session ->
-                    Api.setSessionKey(session.getString("sessionKey"))
+            Api.getToken("Token",
+                { token ->
+                    Api.setAccessToken(token.getString("accessToken"))
                     // If we reached this point, save the hostname
                     if (hostname != "") { Api.setHostname(hostname) }
                     startActivity(MainMenuActivity::class.java)

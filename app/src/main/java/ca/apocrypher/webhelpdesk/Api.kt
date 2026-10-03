@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.webkit.URLUtil
 import androidx.preference.PreferenceManager
 import com.android.volley.Request.Method.GET
+import com.android.volley.Request.Method.POST
 import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonArrayRequest
@@ -24,7 +25,7 @@ typealias Parameter = Pair<String, Any>
 object Api {
     lateinit var apiUrl: String; private set
     lateinit var hostname: String; private set
-    lateinit var sessionKey: String; private set
+    lateinit var accessToken: String; private set
     private lateinit var queue: RequestQueue
     private lateinit var cookieManager: CookieManager
     private lateinit var sharedPref: SharedPreferences
@@ -40,7 +41,7 @@ object Api {
         // Get stored values to build api url
         // Never null because we supply a default
         sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
-        sessionKey = sharedPref.getString("sessionKey", "")!!
+        accessToken = sharedPref.getString("accessToken", "")!!
         hostname   = sharedPref.getString("hostname",   "")!!
 
         // Build apiUrl if values are available
@@ -57,7 +58,8 @@ object Api {
     }
 
     fun reset() {
-        sharedPref.edit().remove("sessionKey").apply()
+        accessToken = ""
+        sharedPref.edit().remove("accessToken").apply()
         // TODO: Create separate functions for hard/soft reset
         //sharedPref.edit().remove("hostname").apply()
         cookieManager.cookieStore.removeAll()
@@ -67,9 +69,9 @@ object Api {
         URLUtil.isValidUrl(url)
     }
 
-    fun setSessionKey(key: String) {
-        sessionKey = key
-        sharedPref.edit().putString("sessionKey", sessionKey).apply()
+    fun setAccessToken(key: String) {
+        accessToken = key
+        sharedPref.edit().putString("accessToken", accessToken).apply()
     }
 
     // TODO: Should this function also build apiUrl?
@@ -81,20 +83,20 @@ object Api {
     private fun addParams(url: String, vararg params: Parameter): String {
         var newUrl = "$url?"
         params.forEach { newUrl += "${it.first}=${it.second}&"}
-        return "${newUrl}sessionKey=$sessionKey"
+        return newUrl.trimEnd('?', '&')
     }
 
     private fun addParams(url: String, params: Bundle): String {
         var newUrl = "$url?"
         params.keySet().forEach { newUrl += "${it}=${params[it]}&"}
-        return "${newUrl}sessionKey=$sessionKey"
+        return newUrl.trimEnd('?', '&')
     }
 
-    private fun addParams(url: String, username: String, password: String): String {
-        return "${url}?username=${username}&password=${password}"
+    private fun getTokenBody(username: String, password: String): JSONObject {
+        return JSONObject().put("username", username).put("password", password)
     }
 
-    fun getSession(
+    fun getToken(
         resource: String,
         result: (JSONObject) -> Unit,
         error: (VolleyError) -> Unit,
@@ -103,15 +105,30 @@ object Api {
         hostname: String
     ) {
         buildApiUrl(hostname)
-        makeSessionRequest(resource, result, error, username, password)
+        makeTokenRequest(resource, result, error, username, password)
     }
 
-    fun testSession(result: (JSONObject) -> Unit, error: (VolleyError) -> Unit) {
-        getResource("Tech/currentTech", result, error)
+    // Return the account-switch response; its "token" field is the technician bearer token.
+    fun switchToTech(
+        techId: Int,
+        key: String,
+        result: (JSONObject) -> Unit,
+        error: (VolleyError) -> Unit
+    ) {
+        val url = "${apiUrl.removeSuffix("/ra")}/whd/switch-account/switch-to-tech?techId=$techId"
+        queue.add(object : JsonObjectRequest(POST, url, null, result, error) {
+            override fun getHeaders(): MutableMap<String, String> {
+                return mutableMapOf("Authorization" to "Bearer $key")
+            }
+        })
     }
 
-    private fun makeSessionRequest(resource: String, result: (JSONObject) -> Unit, error: (VolleyError) -> Unit, username: String, password: String) {
-        queue.add(JsonObjectRequest(GET, addParams("$apiUrl/$resource", username, password), null, result, error))
+    fun testToken(result: (JSONObject) -> Unit, error: (VolleyError) -> Unit) {
+        getResource("Techs/currentTech", result, error)
+    }
+
+    private fun makeTokenRequest(resource: String, result: (JSONObject) -> Unit, error: (VolleyError) -> Unit, username: String, password: String) {
+        queue.add(JsonObjectRequest(POST, "$apiUrl/$resource", getTokenBody(username, password), result, error))
     }
 
     fun getResource(resource: String, result: (JSONObject) -> Unit, error: (VolleyError) -> Unit, vararg params: Parameter) {
@@ -131,18 +148,34 @@ object Api {
     }
 
     private fun makeObjectRequest(resource: String, result: (JSONObject) -> Unit, error: (VolleyError) -> Unit, vararg params: Parameter) {
-        queue.add(JsonObjectRequest(GET, addParams("$apiUrl/$resource", *params), null, result, error))
+        queue.add(object : JsonObjectRequest(GET, addParams("$apiUrl/$resource", *params), null, result, error) {
+            override fun getHeaders(): MutableMap<String, String> {
+                return mutableMapOf("Authorization" to "Bearer $accessToken")
+            }
+        })
     }
 
     private fun makeObjectRequest(resource: String, result: (JSONObject) -> Unit, error: (VolleyError) -> Unit, params: Bundle) {
-        queue.add(JsonObjectRequest(GET, addParams("$apiUrl/$resource", params), null, result, error))
+        queue.add(object : JsonObjectRequest(GET, addParams("$apiUrl/$resource", params), null, result, error) {
+            override fun getHeaders(): MutableMap<String, String> {
+                return mutableMapOf("Authorization" to "Bearer $accessToken")
+            }
+        })
     }
 
     private fun makeArrayRequest(resource: String, result: (JSONArray) -> Unit, error: (VolleyError) -> Unit, vararg params: Parameter) {
-        queue.add(JsonArrayRequest(GET, addParams("$apiUrl/$resource", *params), null, result, error))
+        queue.add(object : JsonArrayRequest(GET, addParams("$apiUrl/$resource", *params), null, result, error) {
+            override fun getHeaders(): MutableMap<String, String> {
+                return mutableMapOf("Authorization" to "Bearer $accessToken")
+            }
+        })
     }
 
     private fun makeArrayRequest(resource: String, result: (JSONArray) -> Unit, error: (VolleyError) -> Unit, params: Bundle) {
-        queue.add(JsonArrayRequest(GET, addParams("$apiUrl/$resource", params), null, result, error))
+        queue.add(object : JsonArrayRequest(GET, addParams("$apiUrl/$resource", params), null, result, error) {
+            override fun getHeaders(): MutableMap<String, String> {
+                return mutableMapOf("Authorization" to "Bearer $accessToken")
+            }
+        })
     }
 }
