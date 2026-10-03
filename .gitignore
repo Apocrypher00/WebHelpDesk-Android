@@ -12,3 +12,15 @@
 /captures
 .externalNativeBuild
 .cxx
+
+# Kotlin compiler state and local Android Studio settings.
+.kotlin/
+/.idea/*
+!/.idea/codeStyles/
+
+# Local signing configuration, signing keys, and build exports.
+/keystore.properties
+*.jks
+*.keystore
+*.apk
+*.aab
