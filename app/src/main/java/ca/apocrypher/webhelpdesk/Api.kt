@@ -53,7 +53,7 @@ object Api {
         // Use stored hostname if blank
         val host = if (hostname != "") { hostname } else { Api.hostname }
         // If hostname hasn't been stored, url is blank
-        apiUrl = if (host != "") { "https://${ host }/helpdesk/WebObjects/Helpdesk.woa/ra" } else { "" }
+        apiUrl = if (host != "") { "https://${ host }/api/v1/ra" } else { "" }
     }
 
     fun reset() {
