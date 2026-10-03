@@ -15,7 +15,7 @@ class TicketSearchActivity : AppCompatActivity() {
 		binding = ActivityTicketSearchBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		Api.getResources("StatusTypes",
+		Api.getResources("StatusType",
 				{
 					val items = Array(it.size + 1) { i ->
 						if (i == 0) "Status" else it.getJSONObject(i - 1).getString("statusTypeName")
@@ -30,7 +30,7 @@ class TicketSearchActivity : AppCompatActivity() {
 				}
 		)
 
-		Api.getResources("Locations",
+		Api.getResources("Location",
 				{
 					val items = Array(it.size + 1) { i ->
 						if (i == 0) "Location" else it.getJSONObject(i - 1).getString("locationName")

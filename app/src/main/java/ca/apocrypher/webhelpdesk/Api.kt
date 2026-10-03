@@ -107,7 +107,7 @@ object Api {
     }
 
     fun testSession(result: (JSONObject) -> Unit, error: (VolleyError) -> Unit) {
-        getResource("Techs/currentTech", result, error)
+        getResource("Tech/currentTech", result, error)
     }
 
     private fun makeSessionRequest(resource: String, result: (JSONObject) -> Unit, error: (VolleyError) -> Unit, username: String, password: String) {
